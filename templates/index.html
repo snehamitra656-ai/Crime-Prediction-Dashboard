@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NIGHTBEAT — Crime Risk Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0f1c;
+    --bg-2:#080c16;
+    --panel:#111927;
+    --panel-soft:#0e1522;
+    --line:#243049;
+    --line-soft:#1a2338;
+    --text:#e7ecf5;
+    --text-dim:#8d97ac;
+    --text-faint:#5b6478;
+    --amber:#f2a93b;
+    --amber-soft:rgba(242,169,59,0.14);
+    --red:#e15c4d;
+    --red-soft:rgba(225,92,77,0.14);
+    --green:#43c08a;
+    --green-soft:rgba(67,192,138,0.14);
+    --signal:#4fa6e8;
+    --signal-soft:rgba(79,166,232,0.14);
+    --radius:10px;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
+  }
+
+  body{
+    background:
+      radial-gradient(ellipse 900px 500px at 15% -10%, rgba(79,166,232,0.08), transparent),
+      radial-gradient(ellipse 700px 500px at 100% 10%, rgba(242,169,59,0.06), transparent),
+      var(--bg);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    min-height:100vh;
+    padding:28px 28px 60px;
+  }
+
+  .mono{ font-family:'JetBrains Mono', monospace; }
+
+  /* ============ HEADER ============ */
+  .console-shell{ max-width:1240px; margin:0 auto; }
+
+  header.topbar{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    padding-bottom:20px;
+    border-bottom:1px solid var(--line);
+    margin-bottom:24px;
+    flex-wrap:wrap;
+    gap:16px;
+  }
+
+  .brand{ display:flex; align-items:center; gap:14px; }
+
+  .brand-mark{
+    width:40px; height:40px;
+    border:1.5px solid var(--amber);
+    border-radius:8px;
+    display:flex; align-items:center; justify-content:center;
+    position:relative;
+    flex-shrink:0;
+  }
+  .brand-mark::before{
+    content:'';
+    width:16px; height:16px;
+    border:1.5px solid var(--amber);
+    border-radius:50%;
+    box-shadow: 0 0 0 3px var(--bg), 0 0 10px var(--amber-soft);
+  }
+  .brand-mark::after{
+    content:'';
+    position:absolute;
+    width:4px; height:4px;
+    background:var(--amber);
+    border-radius:50%;
+    animation: brandblip 2.4s ease-in-out infinite;
+  }
+  @keyframes brandblip{
+    0%,100%{ opacity:1; transform:scale(1); }
+    50%{ opacity:0.3; transform:scale(0.6); }
+  }
+
+  .brand h1{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:22px;
+    letter-spacing:0.02em;
+  }
+  .brand p{
+    font-size:11.5px;
+    color:var(--text-dim);
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    margin-top:2px;
+  }
+
+  .topbar-status{
+    display:flex; gap:22px; align-items:center;
+  }
+  .status-item{ text-align:right; }
+  .status-item .label{
+    font-size:10px; color:var(--text-faint);
+    text-transform:uppercase; letter-spacing:0.1em;
+  }
+  .status-item .value{
+    font-size:13.5px; color:var(--text); margin-top:3px;
+    font-family:'JetBrains Mono', monospace;
+  }
+  .live-dot{
+    display:inline-block; width:7px; height:7px; border-radius:50%;
+    background:var(--green);
+    box-shadow:0 0 8px var(--green);
+    margin-right:6px;
+    animation: pulse-dot 1.8s ease-in-out infinite;
+  }
+  @keyframes pulse-dot{ 0%,100%{opacity:1;} 50%{opacity:0.35;} }
+
+  /* ============ MAIN GRID ============ */
+  .main-grid{
+    display:grid;
+    grid-template-columns: 340px 1fr;
+    gap:20px;
+    align-items:start;
+  }
+
+  @media (max-width: 880px){
+    .main-grid{ grid-template-columns: 1fr; }
+  }
+
+  .panel{
+    background: linear-gradient(180deg, var(--panel), var(--panel-soft));
+    border:1px solid var(--line);
+    border-radius: var(--radius);
+    padding:22px;
+  }
+
+  .panel-eyebrow{
+    font-size:10.5px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--text-faint);
+    margin-bottom:4px;
+  }
+  .panel-title{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:17px;
+    margin-bottom:20px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+
+  /* ============ CONSOLE / INPUTS ============ */
+  .field{ margin-bottom:18px; }
+  .field label{
+    display:block;
+    font-size:11px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--text-dim);
+    margin-bottom:8px;
+  }
+  .field label .req-dot{ color:var(--amber); }
+
+  select, .fake-select{
+    width:100%;
+    background:var(--bg-2);
+    border:1px solid var(--line);
+    color:var(--text);
+    padding:11px 14px;
+    border-radius:7px;
+    font-size:14px;
+    font-family:'Inter', sans-serif;
+    appearance:none;
+    -webkit-appearance:none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--text-dim) 50%), linear-gradient(135deg, var(--text-dim) 50%, transparent 50%);
+    background-position: calc(100% - 20px) center, calc(100% - 15px) center;
+    background-size: 5px 5px, 5px 5px;
+    background-repeat:no-repeat;
+    cursor:pointer;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  select:hover{ border-color:var(--text-faint); }
+  select:focus{
+    outline:none;
+    border-color:var(--signal);
+    box-shadow:0 0 0 3px var(--signal-soft);
+  }
+  select:disabled{ opacity:0.4; cursor:not-allowed; }
+  select option{ background:var(--bg-2); }
+
+  .field-hint{
+    font-size:11px;
+    color:var(--text-faint);
+    margin-top:6px;
+  }
+
+  .run-btn{
+    width:100%;
+    background:var(--amber);
+    color:#1a1204;
+    border:none;
+    padding:14px;
+    border-radius:7px;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:14.5px;
+    letter-spacing:0.03em;
+    cursor:pointer;
+    margin-top:6px;
+    transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+    box-shadow: 0 4px 20px rgba(242,169,59,0.18);
+  }
+  .run-btn:hover{ background:#f5b757; box-shadow:0 6px 24px rgba(242,169,59,0.3); }
+  .run-btn:active{ transform:scale(0.98); }
+  .run-btn:disabled{ opacity:0.5; cursor:not-allowed; transform:none; box-shadow:none; }
+
+  .divider-line{
+    height:1px;
+    background:var(--line);
+    margin:20px 0;
+  }
+
+  .legend{
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+  }
+  .legend-row{
+    display:flex; align-items:center; gap:9px;
+    font-size:11.5px; color:var(--text-dim);
+  }
+  .legend-swatch{ width:9px; height:9px; border-radius:2px; flex-shrink:0; }
+
+  /* ============ RADAR SIGNATURE ============ */
+  .radar-panel{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    position:relative;
+    min-height:420px;
+    justify-content:center;
+  }
+
+  .radar-wrap{
+    position:relative;
+    width:320px;
+    height:320px;
+  }
+
+  .radar-svg{ width:100%; height:100%; }
+
+  .radar-ring{ fill:none; stroke:var(--line); stroke-width:1; }
+  .radar-crosshair{ stroke:var(--line-soft); stroke-width:1; }
+
+  .radar-sweep{
+    transform-origin: 160px 160px;
+    animation: sweep-rotate 3.2s linear infinite;
+  }
+  .radar-sweep.locked{ animation-play-state: paused; }
+
+  @keyframes sweep-rotate{ from{ transform:rotate(0deg);} to{ transform:rotate(360deg);} }
+
+  .radar-blip{ opacity:0; }
+  .radar-blip.show{
+    opacity:1;
+    animation: blip-pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes blip-pulse{
+    0%,100%{ opacity:0.35; r:3; }
+    50%{ opacity:1; r:4.5; }
+  }
+
+  .radar-center-readout{
+    position:absolute;
+    top:50%; left:50%;
+    transform:translate(-50%,-50%);
+    text-align:center;
+    pointer-events:none;
+  }
+  .radar-center-readout .rc-label{
+    font-size:10px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--text-faint);
+  }
+  .radar-center-readout .rc-score{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:42px;
+    font-weight:700;
+    line-height:1.1;
+    margin:4px 0 2px;
+    transition: color 0.4s ease;
+  }
+  .radar-center-readout .rc-tier{
+    font-size:12.5px;
+    font-weight:600;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+    transition: color 0.4s ease;
+  }
+
+  .radar-caption{
+    margin-top:18px;
+    text-align:center;
+  }
+  .radar-caption .rc-location{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:15.5px;
+  }
+  .radar-caption .rc-meta{
+    font-size:11.5px;
+    color:var(--text-faint);
+    margin-top:4px;
+    font-family:'JetBrains Mono', monospace;
+  }
+
+  .idle-msg{
+    color:var(--text-faint);
+    font-size:13px;
+    text-align:center;
+    max-width:220px;
+    line-height:1.6;
+  }
+
+  /* ============ RESULTS ROW ============ */
+  .results-grid{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap:16px;
+    margin-top:20px;
+  }
+  @media (max-width: 880px){ .results-grid{ grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px){ .results-grid{ grid-template-columns: 1fr; } }
+
+  .result-card{
+    background: linear-gradient(180deg, var(--panel), var(--panel-soft));
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:18px;
+    opacity:0.35;
+    transition: opacity 0.4s ease, border-color 0.4s ease;
+  }
+  .result-card.active{ opacity:1; }
+
+  .result-card .rc-eyebrow{
+    font-size:10px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--text-faint);
+    margin-bottom:10px;
+  }
+  .result-card .rc-main{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:19px;
+    margin-bottom:4px;
+  }
+  .result-card .rc-sub{
+    font-size:12px;
+    color:var(--text-dim);
+  }
+
+  .badge{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:3px 9px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:600;
+    margin-top:8px;
+  }
+  .badge-dot{ width:6px; height:6px; border-radius:50%; }
+  .badge.green{ background:var(--green-soft); color:var(--green); }
+  .badge.red{ background:var(--red-soft); color:var(--red); }
+  .badge.amber{ background:var(--amber-soft); color:var(--amber); }
+
+  .confidence-bar-track{
+    width:100%; height:6px;
+    background:var(--bg-2);
+    border-radius:4px;
+    margin-top:12px;
+    overflow:hidden;
+  }
+  .confidence-bar-fill{
+    height:100%;
+    background: linear-gradient(90deg, var(--signal), var(--green));
+    width:0%;
+    transition: width 0.8s ease;
+    border-radius:4px;
+  }
+
+  /* sparkline */
+  .spark-row{ display:flex; align-items:flex-end; gap:3px; height:32px; margin-top:12px; }
+  .spark-bar{
+    flex:1;
+    background:var(--line);
+    border-radius:2px 2px 0 0;
+    transition: height 0.5s ease, background 0.5s ease;
+  }
+
+  /* ============ FOOTER NOTE ============ */
+  .footnote{
+    margin-top:28px;
+    padding:16px 18px;
+    border:1px dashed var(--line);
+    border-radius:var(--radius);
+    font-size:12px;
+    color:var(--text-faint);
+    line-height:1.7;
+    display:flex;
+    gap:12px;
+  }
+  .footnote .fn-icon{
+    flex-shrink:0;
+    width:20px; height:20px;
+    border:1px solid var(--text-faint);
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Space Grotesk', sans-serif;
+    font-size:12px;
+  }
+</style>
+</head>
+<body>
+
+<div class="console-shell">
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark"></div>
+      <div>
+        <h1>NIGHTBEAT</h1>
+        <p>Crime Risk Console · India Metro Grid</p>
+      </div>
+    </div>
+    <div class="topbar-status">
+      <div class="status-item">
+        <div class="label"><span class="live-dot"></span>Model Status</div>
+        <div class="value">Simulated · v0.4</div>
+      </div>
+      <div class="status-item">
+        <div class="label">Session Clock</div>
+        <div class="value" id="sessionClock">--:--:--</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="main-grid">
+
+    <!-- LEFT: INPUT CONSOLE -->
+    <div class="panel">
+      <div class="panel-eyebrow">Query Parameters</div>
+      <div class="panel-title">Dispatch Input</div>
+
+      <div class="field">
+        <label>City <span class="req-dot">●</span></label>
+        <select id="citySelect">
+          <option value="">Select metro city…</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Area / Locality <span class="req-dot">●</span></label>
+        <select id="areaSelect" disabled>
+          <option value="">Select city first…</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Time Window <span class="req-dot">●</span></label>
+        <select id="timeSelect" disabled>
+          <option value="">Select area first…</option>
+        </select>
+        <div class="field-hint">Risk patterns shift sharply by hour — dawn, daylight and post-midnight windows carry different profiles.</div>
+      </div>
+
+      <button class="run-btn" id="runBtn" disabled>Run Risk Analysis</button>
+
+      <div class="divider-line"></div>
+
+      <div class="panel-eyebrow" style="margin-bottom:12px;">Risk Scale</div>
+      <div class="legend">
+        <div class="legend-row"><span class="legend-swatch" style="background:var(--green);"></span>0–29 · Low</div>
+        <div class="legend-row"><span class="legend-swatch" style="background:var(--amber);"></span>30–59 · Moderate</div>
+        <div class="legend-row"><span class="legend-swatch" style="background:#e08a3d;"></span>60–79 · High</div>
+        <div class="legend-row"><span class="legend-swatch" style="background:var(--red);"></span>80–100 · Critical</div>
+      </div>
+    </div>
+
+    <!-- RIGHT: RADAR + RESULTS -->
+    <div>
+      <div class="panel radar-panel">
+        <div class="radar-wrap" id="radarWrap">
+          <svg class="radar-svg" viewBox="0 0 320 320" id="radarSvg">
+            <circle class="radar-ring" cx="160" cy="160" r="150"/>
+            <circle class="radar-ring" cx="160" cy="160" r="110"/>
+            <circle class="radar-ring" cx="160" cy="160" r="70"/>
+            <circle class="radar-ring" cx="160" cy="160" r="30"/>
+            <line class="radar-crosshair" x1="160" y1="10" x2="160" y2="310"/>
+            <line class="radar-crosshair" x1="10" y1="160" x2="310" y2="160"/>
+            <g id="blipGroup"></g>
+            <g class="radar-sweep" id="radarSweep">
+              <path d="M 160 160 L 160 10 A 150 150 0 0 1 250.9 213 Z" fill="url(#sweepGradient)"/>
+              <line x1="160" y1="160" x2="160" y2="10" stroke="var(--signal)" stroke-width="1.5" opacity="0.8"/>
+            </g>
+            <defs>
+              <linearGradient id="sweepGradient" x1="160" y1="160" x2="160" y2="10" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#4fa6e8" stop-opacity="0.35"/>
+                <stop offset="100%" stop-color="#4fa6e8" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <div class="radar-center-readout" id="centerReadout">
+            <div class="rc-label">Risk Index</div>
+            <div class="rc-score" id="rcScore" style="color:var(--text-faint);">--</div>
+            <div class="rc-tier" id="rcTier" style="color:var(--text-faint);">Awaiting input</div>
+          </div>
+        </div>
+
+        <div class="radar-caption" id="radarCaption">
+          <p class="idle-msg">Choose a city, locality and time window on the left, then run the analysis to sweep for risk signal.</p>
+        </div>
+      </div>
+
+      <div class="results-grid">
+        <div class="result-card" id="cardCrime">
+          <div class="rc-eyebrow">Predicted Crime Type</div>
+          <div class="rc-main" id="crimeType">—</div>
+          <div class="rc-sub" id="crimeTypeSub">No analysis run yet</div>
+        </div>
+
+        <div class="result-card" id="cardArrest">
+          <div class="rc-eyebrow">Arrest Outcome</div>
+          <div class="rc-main" id="arrestStatus">—</div>
+          <span class="badge amber" id="arrestBadge" style="visibility:hidden;"><span class="badge-dot" style="background:currentColor;"></span>Pending</span>
+        </div>
+
+        <div class="result-card" id="cardConfidence">
+          <div class="rc-eyebrow">Model Confidence</div>
+          <div class="rc-main" id="confidenceValue">—</div>
+          <div class="confidence-bar-track"><div class="confidence-bar-fill" id="confidenceBar"></div></div>
+        </div>
+
+        <div class="result-card" id="cardTrend">
+          <div class="rc-eyebrow">7-Day Risk Trend</div>
+          <div class="rc-main" id="trendLabel" style="font-size:14px;">—</div>
+          <div class="spark-row" id="sparkRow"></div>
+        </div>
+      </div>
+
+      <div class="footnote">
+        <div class="fn-icon">i</div>
+        <div>This console runs on a <strong>synthetic scoring model</strong> for demonstration purposes — scores are generated deterministically from city, locality and time inputs and do not reflect real crime records, live police data, or any actual predictive policing system.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* ================= DATA ================= */
+const CITY_DATA = {
+  "Mumbai": ["Dharavi", "Bandra", "Andheri", "Colaba", "Dadar", "Kurla", "Borivali", "Chembur"],
+  "Delhi": ["Connaught Place", "Chandni Chowk", "Dwarka", "Karol Bagh", "Saket", "Rohini", "Nehru Place"],
+  "Bengaluru": ["Koramangala", "Whitefield", "MG Road", "Electronic City", "Indiranagar", "Jayanagar", "Yeshwanthpur"],
+  "Chennai": ["T Nagar", "Anna Nagar", "Adyar", "Velachery", "Egmore", "Mylapore"],
+  "Kolkata": ["Park Street", "Salt Lake", "Howrah", "Behala", "Gariahat", "Esplanade"],
+  "Hyderabad": ["Banjara Hills", "Secunderabad", "Hitech City", "Charminar", "Kukatpally", "Begumpet"],
+  "Pune": ["Koregaon Park", "Hinjewadi", "Kothrud", "Shivajinagar", "Viman Nagar"],
+  "Ahmedabad": ["Navrangpura", "Satellite", "Maninagar", "Bopal", "Vastrapur"]
+};
+
+const TIME_WINDOWS = [
+  { label: "Early Morning (12 AM – 6 AM)", key: "early", weight: 0.55 },
+  { label: "Morning (6 AM – 12 PM)", key: "morning", weight: 0.25 },
+  { label: "Afternoon (12 PM – 4 PM)", key: "afternoon", weight: 0.3 },
+  { label: "Evening (4 PM – 8 PM)", key: "evening", weight: 0.5 },
+  { label: "Night (8 PM – 12 AM)", key: "night", weight: 0.7 }
+];
+
+const CRIME_TYPES = [
+  "Chain Snatching", "Vehicle Theft", "Burglary", "Pickpocketing",
+  "Assault", "Cybercrime / Fraud", "Robbery", "Vandalism", "Drug Offense"
+];
+
+/* ================= DETERMINISTIC PSEUDO-RANDOM ================= */
+function hashString(str){
+  let hash = 5381;
+  for(let i=0;i<str.length;i++){
+    hash = ((hash << 5) + hash) + str.charCodeAt(i);
+    hash = hash & 0xffffffff;
+  }
+  return Math.abs(hash);
+}
+
+function seededRandom(seed){
+  // mulberry32
+  let t = seed += 0x6D2B79F5;
+  return function(){
+    t += 0x6D2B79F5;
+    let r = Math.imul(t ^ (t >>> 15), 1 | t);
+    r ^= r + Math.imul(r ^ (r >>> 7), 61 | r);
+    return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/* ================= STATE ================= */
+let selectedCity = "", selectedArea = "", selectedTime = "";
+
+/* ================= POPULATE DROPDOWNS ================= */
+const citySelect = document.getElementById('citySelect');
+const areaSelect = document.getElementById('areaSelect');
+const timeSelect = document.getElementById('timeSelect');
+const runBtn = document.getElementById('runBtn');
+
+Object.keys(CITY_DATA).forEach(city => {
+  const opt = document.createElement('option');
+  opt.value = city; opt.textContent = city;
+  citySelect.appendChild(opt);
+});
+
+citySelect.addEventListener('change', () => {
+  selectedCity = citySelect.value;
+  areaSelect.innerHTML = '';
+  timeSelect.innerHTML = '<option value="">Select area first…</option>';
+  timeSelect.disabled = true;
+  runBtn.disabled = true;
+
+  if(!selectedCity){
+    areaSelect.innerHTML = '<option value="">Select city first…</option>';
+    areaSelect.disabled = true;
+    return;
+  }
+
+  const placeholder = document.createElement('option');
+  placeholder.value = ""; placeholder.textContent = "Select locality…";
+  areaSelect.appendChild(placeholder);
+
+  CITY_DATA[selectedCity].forEach(area => {
+    const opt = document.createElement('option');
+    opt.value = area; opt.textContent = area;
+    areaSelect.appendChild(opt);
+  });
+  areaSelect.disabled = false;
+  resetReadout();
+});
+
+areaSelect.addEventListener('change', () => {
+  selectedArea = areaSelect.value;
+  timeSelect.innerHTML = '';
+  runBtn.disabled = true;
+
+  if(!selectedArea){
+    timeSelect.innerHTML = '<option value="">Select area first…</option>';
+    timeSelect.disabled = true;
+    return;
+  }
+
+  const placeholder = document.createElement('option');
+  placeholder.value = ""; placeholder.textContent = "Select time window…";
+  timeSelect.appendChild(placeholder);
+
+  TIME_WINDOWS.forEach(tw => {
+    const opt = document.createElement('option');
+    opt.value = tw.key; opt.textContent = tw.label;
+    timeSelect.appendChild(opt);
+  });
+  timeSelect.disabled = false;
+  resetReadout();
+});
+
+timeSelect.addEventListener('change', () => {
+  selectedTime = timeSelect.value;
+  runBtn.disabled = !selectedTime;
+});
+
+/* ================= RESET ================= */
+function resetReadout(){
+  document.getElementById('rcScore').textContent = '--';
+  document.getElementById('rcScore').style.color = 'var(--text-faint)';
+  document.getElementById('rcTier').textContent = 'Awaiting input';
+  document.getElementById('rcTier').style.color = 'var(--text-faint)';
+  document.getElementById('radarCaption').innerHTML = '<p class="idle-msg">Choose a city, locality and time window on the left, then run the analysis to sweep for risk signal.</p>';
+  document.getElementById('blipGroup').innerHTML = '';
+  document.getElementById('radarSweep').classList.remove('locked');
+
+  ['cardCrime','cardArrest','cardConfidence','cardTrend'].forEach(id => {
+    document.getElementById(id).classList.remove('active');
+  });
+  document.getElementById('crimeType').textContent = '—';
+  document.getElementById('crimeTypeSub').textContent = 'No analysis run yet';
+  document.getElementById('arrestStatus').textContent = '—';
+  document.getElementById('arrestBadge').style.visibility = 'hidden';
+  document.getElementById('confidenceValue').textContent = '—';
+  document.getElementById('confidenceBar').style.width = '0%';
+  document.getElementById('trendLabel').textContent = '—';
+  document.getElementById('sparkRow').innerHTML = '';
+}
+
+/* ================= RUN ANALYSIS ================= */
+runBtn.addEventListener('click', () => {
+  if(!selectedCity || !selectedArea || !selectedTime) return;
+  runBtn.disabled = true;
+  runBtn.textContent = 'Scanning…';
+
+  const seedStr = `${selectedCity}|${selectedArea}|${selectedTime}`;
+  const seed = hashString(seedStr);
+  const rand = seededRandom(seed);
+
+  const timeWindow = TIME_WINDOWS.find(t => t.key === selectedTime);
+
+  // generate values
+  const baseScore = rand() * 60 + timeWindow.weight * 35; // 0-95ish
+  const riskScore = Math.min(97, Math.max(4, Math.round(baseScore)));
+
+  const crimeIdx = Math.floor(rand() * CRIME_TYPES.length);
+  const predictedCrime = CRIME_TYPES[crimeIdx];
+
+  const arrestProb = rand();
+  const arrested = arrestProb > 0.45;
+  const arrestRate = Math.round(arrestProb * 100);
+
+  const confidence = Math.round(68 + rand() * 27);
+
+  const trend = [];
+  for(let i=0;i<7;i++){
+    trend.push(Math.round(20 + rand() * 80));
+  }
+
+  // radar blips
+  const blipGroup = document.getElementById('blipGroup');
+  blipGroup.innerHTML = '';
+  const numBlips = 3 + Math.floor(rand() * 4);
+  for(let i=0;i<numBlips;i++){
+    const angle = rand() * Math.PI * 2;
+    const radius = 30 + rand() * 115;
+    const x = 160 + Math.cos(angle) * radius;
+    const y = 160 + Math.sin(angle) * radius;
+    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    circle.setAttribute('cx', x);
+    circle.setAttribute('cy', y);
+    circle.setAttribute('r', 3);
+    circle.setAttribute('fill', riskScore >= 80 ? 'var(--red)' : riskScore >= 60 ? '#e08a3d' : riskScore >= 30 ? 'var(--amber)' : 'var(--green)');
+    circle.classList.add('radar-blip');
+    blipGroup.appendChild(circle);
+    setTimeout(() => circle.classList.add('show'), 1400 + i * 150);
+  }
+
+  // sweep animation timing then lock
+  setTimeout(() => {
+    document.getElementById('radarSweep').classList.add('locked');
+
+    // center readout
+    const rcScore = document.getElementById('rcScore');
+    const rcTier = document.getElementById('rcTier');
+    let tierLabel, tierColor;
+    if(riskScore >= 80){ tierLabel = 'Critical'; tierColor = 'var(--red)'; }
+    else if(riskScore >= 60){ tierLabel = 'High'; tierColor = '#e08a3d'; }
+    else if(riskScore >= 30){ tierLabel = 'Moderate'; tierColor = 'var(--amber)'; }
+    else { tierLabel = 'Low'; tierColor = 'var(--green)'; }
+
+    rcScore.textContent = riskScore;
+    rcScore.style.color = tierColor;
+    rcTier.textContent = tierLabel + ' Risk';
+    rcTier.style.color = tierColor;
+
+    document.getElementById('radarCaption').innerHTML = `
+      <div class="rc-location">${selectedArea}, ${selectedCity}</div>
+      <div class="rc-meta">WINDOW · ${timeWindow.label.toUpperCase()}</div>
+    `;
+
+    // result cards
+    document.getElementById('crimeType').textContent = predictedCrime;
+    document.getElementById('crimeTypeSub').textContent = `Most likely category for this window`;
+    document.getElementById('cardCrime').classList.add('active');
+
+    const arrestBadge = document.getElementById('arrestBadge');
+    document.getElementById('arrestStatus').textContent = arrested ? 'Likely Arrested' : 'Likely Unresolved';
+    arrestBadge.textContent = `${arrestRate}% historical arrest rate`;
+    arrestBadge.className = 'badge ' + (arrested ? 'green' : 'red');
+    arrestBadge.style.visibility = 'visible';
+    document.getElementById('cardArrest').classList.add('active');
+
+    document.getElementById('confidenceValue').textContent = confidence + '%';
+    document.getElementById('confidenceBar').style.width = confidence + '%';
+    document.getElementById('cardConfidence').classList.add('active');
+
+    const avgTrend = Math.round(trend.reduce((a,b)=>a+b,0) / trend.length);
+    document.getElementById('trendLabel').textContent = `Avg. ${avgTrend} / 100 this week`;
+    const sparkRow = document.getElementById('sparkRow');
+    sparkRow.innerHTML = '';
+    trend.forEach(val => {
+      const bar = document.createElement('div');
+      bar.className = 'spark-bar';
+      bar.style.height = '2px';
+      const color = val >= 80 ? 'var(--red)' : val >= 60 ? '#e08a3d' : val >= 30 ? 'var(--amber)' : 'var(--green)';
+      sparkRow.appendChild(bar);
+      requestAnimationFrame(() => {
+        bar.style.height = (val * 0.3) + 'px';
+        bar.style.background = color;
+      });
+    });
+    document.getElementById('cardTrend').classList.add('active');
+
+    runBtn.disabled = false;
+    runBtn.textContent = 'Run Risk Analysis';
+  }, 1900);
+});
+
+/* ================= CLOCK ================= */
+function updateClock(){
+  const now = new Date();
+  document.getElementById('sessionClock').textContent = now.toLocaleTimeString('en-IN', { hour12:false });
+}
+updateClock();
+setInterval(updateClock, 1000);
+</script>
+
+</body>
+</html>

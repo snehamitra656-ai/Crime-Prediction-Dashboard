@@ -1,0 +1,1868 @@
+/* ===========================
+   Google Font
+=========================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+
+/* ===========================
+        Reset
+=========================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+
+    background:linear-gradient(135deg,#eef4ff,#dceeff,#cfd8ff);
+
+    min-height:100vh;
+
+    overflow-x:hidden;
+
+}
+
+
+/* ===========================
+        Scrollbar
+=========================== */
+
+::-webkit-scrollbar{
+
+    width:10px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#dde7ff;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#6C63FF;
+
+    border-radius:20px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:#5145ff;
+
+}
+
+
+/* ===========================
+        Layout
+=========================== */
+
+.container{
+
+    display:flex;
+
+    min-height:100vh;
+
+}
+
+
+/* ===========================
+        Sidebar
+=========================== */
+
+.sidebar{
+
+    width:270px;
+
+    background:rgba(255,255,255,.25);
+
+    backdrop-filter:blur(20px);
+
+    border-right:1px solid rgba(255,255,255,.4);
+
+    padding:30px 20px;
+
+    position:fixed;
+
+    height:100vh;
+
+    left:0;
+
+    top:0;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.1);
+
+}
+
+
+.logo{
+
+    text-align:center;
+
+    margin-bottom:45px;
+
+}
+
+.logo i{
+
+    font-size:55px;
+
+    color:#6C63FF;
+
+    margin-bottom:12px;
+
+}
+
+.logo h2{
+
+    color:#222;
+
+    font-size:28px;
+
+    font-weight:700;
+
+}
+
+
+.sidebar ul{
+
+    list-style:none;
+
+}
+
+.sidebar ul li{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    padding:18px;
+
+    margin:12px 0;
+
+    border-radius:15px;
+
+    cursor:pointer;
+
+    transition:.4s;
+
+    font-size:17px;
+
+    color:#333;
+
+}
+
+.sidebar ul li i{
+
+    width:25px;
+
+    text-align:center;
+
+    font-size:20px;
+
+}
+
+
+.sidebar ul li:hover{
+
+    background:#6C63FF;
+
+    color:white;
+
+    transform:translateX(8px);
+
+    box-shadow:0 8px 20px rgba(108,99,255,.35);
+
+}
+
+.sidebar ul .active{
+
+    background:#6C63FF;
+
+    color:white;
+
+}
+
+
+/* ===========================
+      Main Content
+=========================== */
+
+.main-content{
+
+    margin-left:270px;
+
+    width:calc(100% - 270px);
+
+    padding:35px;
+
+}
+
+
+/* ===========================
+        Navbar
+=========================== */
+
+header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:30px;
+
+}
+
+
+.welcome h1{
+
+    font-size:34px;
+
+    color:#222;
+
+    font-weight:700;
+
+}
+
+
+.welcome p{
+
+    color:#666;
+
+    margin-top:5px;
+
+}
+
+
+.profile{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:20px;
+
+}
+
+
+.notification{
+
+    width:55px;
+
+    height:55px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:white;
+
+    cursor:pointer;
+
+    font-size:20px;
+
+    transition:.4s;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+}
+
+.notification:hover{
+
+    background:#6C63FF;
+
+    color:white;
+
+    transform:rotate(12deg);
+
+}
+
+
+.profile img{
+
+    width:55px;
+
+    height:55px;
+
+    border-radius:50%;
+
+    border:3px solid #6C63FF;
+
+}
+
+
+/* ===========================
+       Hero Section
+=========================== */
+
+.hero{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    background:rgba(255,255,255,.35);
+
+    backdrop-filter:blur(20px);
+
+    border-radius:25px;
+
+    padding:45px;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.08);
+
+    margin-bottom:40px;
+
+}
+
+
+.hero-left{
+
+    width:60%;
+
+}
+
+
+.hero-left h2{
+
+    font-size:42px;
+
+    color:#222;
+
+    margin-bottom:15px;
+
+}
+
+
+.hero-left p{
+
+    font-size:18px;
+
+    color:#555;
+
+    line-height:1.8;
+
+}
+
+
+.hero-right{
+
+    width:40%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+
+.hero-right i{
+
+    font-size:180px;
+
+    color:#6C63FF;
+
+    animation:float 4s ease-in-out infinite;
+
+    text-shadow:0 0 30px rgba(108,99,255,.4);
+
+}
+
+
+/* ===========================
+       Floating Animation
+=========================== */
+
+@keyframes float{
+
+    0%{
+
+        transform:translateY(0px);
+
+    }
+
+    50%{
+
+        transform:translateY(-20px);
+
+    }
+
+    100%{
+
+        transform:translateY(0px);
+
+    }
+
+}
+
+
+/* ===========================
+      Glass Card
+=========================== */
+
+.glass{
+
+    background:rgba(255,255,255,.25);
+
+    backdrop-filter:blur(20px);
+
+    border-radius:20px;
+
+    box-shadow:0 15px 30px rgba(0,0,0,.08);
+
+    border:1px solid rgba(255,255,255,.4);
+
+}
+
+
+/* ===========================
+      Section Title
+=========================== */
+
+section h2{
+
+    color:#222;
+
+    margin-bottom:20px;
+
+    font-size:28px;
+
+    font-weight:700;
+
+}
+
+
+/* ===========================
+      Responsive
+=========================== */
+
+@media(max-width:1000px){
+
+.sidebar{
+
+    width:90px;
+
+}
+
+.logo h2{
+
+    display:none;
+
+}
+
+.sidebar ul li{
+
+    justify-content:center;
+
+}
+
+.sidebar ul li{
+
+    font-size:0;
+
+}
+
+.sidebar ul li i{
+
+    font-size:22px;
+
+}
+
+.main-content{
+
+    margin-left:90px;
+
+    width:calc(100% - 90px);
+
+}
+
+.hero{
+
+    flex-direction:column;
+
+    text-align:center;
+
+}
+
+.hero-left{
+
+    width:100%;
+
+}
+
+.hero-right{
+
+    width:100%;
+
+    margin-top:30px;
+
+}
+
+.hero-right i{
+
+    font-size:120px;
+
+}
+
+}
+
+
+@media(max-width:768px){
+
+header{
+
+    flex-direction:column;
+
+    gap:20px;
+
+}
+
+.main-content{
+
+    padding:20px;
+
+}
+
+.hero{
+
+    padding:25px;
+
+}
+
+.hero-left h2{
+
+    font-size:30px;
+
+}
+
+}
+/*=========================================
+      Prediction Section
+=========================================*/
+
+.prediction-section{
+
+    background:rgba(255,255,255,.28);
+
+    backdrop-filter:blur(18px);
+
+    border-radius:25px;
+
+    padding:35px;
+
+    margin-bottom:35px;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.08);
+
+}
+
+.prediction-section h2{
+
+    margin-bottom:25px;
+
+    color:#222;
+
+}
+
+.prediction-section form{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+
+    gap:25px;
+
+}
+
+
+/*=========================================
+          Input Box
+=========================================*/
+
+.input-box{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.input-box label{
+
+    margin-bottom:10px;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    color:#444;
+
+}
+
+.input-box input,
+
+.input-box select{
+
+    padding:16px;
+
+    border:none;
+
+    outline:none;
+
+    border-radius:15px;
+
+    background:#ffffff;
+
+    font-size:16px;
+
+    transition:.3s;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+}
+
+.input-box input:focus,
+
+.input-box select:focus{
+
+    border:2px solid #6C63FF;
+
+    transform:scale(1.02);
+
+    box-shadow:0 10px 20px rgba(108,99,255,.25);
+
+}
+
+.input-box select{
+
+    cursor:pointer;
+
+}
+
+
+/*=========================================
+        Predict Button
+=========================================*/
+
+.predict-btn{
+
+    grid-column:1/-1;
+
+    padding:18px;
+
+    border:none;
+
+    border-radius:18px;
+
+    background:linear-gradient(135deg,#6C63FF,#8A7BFF);
+
+    color:white;
+
+    font-size:18px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.4s;
+
+    box-shadow:0 15px 30px rgba(108,99,255,.35);
+
+}
+
+.predict-btn i{
+
+    margin-right:10px;
+
+}
+
+.predict-btn:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:0 20px 40px rgba(108,99,255,.45);
+
+}
+
+.predict-btn:active{
+
+    transform:scale(.97);
+
+}
+
+
+/*=========================================
+       Prediction Result Card
+=========================================*/
+
+.prediction-result{
+
+    margin-bottom:35px;
+
+}
+
+.result-card{
+
+    background:rgba(255,255,255,.30);
+
+    backdrop-filter:blur(20px);
+
+    border-radius:25px;
+
+    padding:35px;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.08);
+
+}
+
+.result-card h2{
+
+    color:#333;
+
+    margin-bottom:15px;
+
+}
+
+.result-card h1{
+
+    color:#6C63FF;
+
+    font-size:36px;
+
+    margin-bottom:30px;
+
+    font-weight:700;
+
+}
+
+
+/*=========================================
+         Result Details
+=========================================*/
+
+.details{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+
+    gap:20px;
+
+}
+
+.details div{
+
+    background:white;
+
+    padding:20px;
+
+    border-radius:18px;
+
+    text-align:center;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+    transition:.3s;
+
+}
+
+.details div:hover{
+
+    transform:translateY(-6px);
+
+}
+
+.details h3{
+
+    color:#444;
+
+    margin-bottom:10px;
+
+}
+
+.details p{
+
+    color:#6C63FF;
+
+    font-size:18px;
+
+    font-weight:700;
+
+}
+
+
+/*=========================================
+         Statistics Cards
+=========================================*/
+
+.stats-section{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+    gap:25px;
+
+    margin-bottom:40px;
+
+}
+
+.stat-card{
+
+    background:rgba(255,255,255,.30);
+
+    backdrop-filter:blur(20px);
+
+    padding:30px;
+
+    border-radius:22px;
+
+    text-align:center;
+
+    transition:.4s;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.08);
+
+}
+
+.stat-card:hover{
+
+    transform:translateY(-8px);
+
+}
+
+.stat-card i{
+
+    font-size:45px;
+
+    color:#6C63FF;
+
+    margin-bottom:15px;
+
+}
+
+.stat-card h2{
+
+    font-size:32px;
+
+    color:#222;
+
+}
+
+.stat-card p{
+
+    margin-top:10px;
+
+    color:#666;
+
+}
+
+
+/*=========================================
+         Risk Meter
+=========================================*/
+
+.risk-meter{
+
+    margin-bottom:40px;
+
+}
+
+.meter-card{
+
+    background:rgba(255,255,255,.30);
+
+    backdrop-filter:blur(20px);
+
+    padding:30px;
+
+    border-radius:22px;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.08);
+
+}
+
+.progress{
+
+    width:100%;
+
+    height:28px;
+
+    background:#ddd;
+
+    border-radius:50px;
+
+    overflow:hidden;
+
+    margin:25px 0;
+
+}
+
+.progress-bar{
+
+    height:100%;
+
+    width:0%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    color:white;
+
+    font-weight:600;
+
+    border-radius:50px;
+
+    background:linear-gradient(90deg,#00C853,#FFD600,#FF3D00);
+
+    transition:width 1.5s ease;
+
+}
+
+.meter-card h3{
+
+    text-align:center;
+
+    color:#6C63FF;
+
+    font-size:26px;
+
+}
+
+
+/*=========================================
+          Responsive
+=========================================*/
+
+@media(max-width:768px){
+
+.prediction-section{
+
+    padding:20px;
+
+}
+
+.result-card{
+
+    padding:20px;
+
+}
+
+.result-card h1{
+
+    font-size:28px;
+
+}
+
+.predict-btn{
+
+    font-size:16px;
+
+}
+
+.details{
+
+    grid-template-columns:1fr;
+
+}
+
+.stats-section{
+
+    grid-template-columns:1fr;
+
+}
+
+}
+/*=========================================
+        Analytics Section
+=========================================*/
+
+.analytics{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(420px,1fr));
+
+    gap:30px;
+
+    margin-bottom:40px;
+
+}
+
+.chart-box{
+
+    background:rgba(255,255,255,.30);
+
+    backdrop-filter:blur(20px);
+
+    border-radius:22px;
+
+    padding:30px;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.08);
+
+    transition:.4s;
+
+}
+
+.chart-box:hover{
+
+    transform:translateY(-8px);
+
+}
+
+.chart-box h2{
+
+    margin-bottom:20px;
+
+    color:#222;
+
+}
+
+.chart-box canvas{
+
+    width:100%!important;
+
+    height:320px!important;
+
+}
+
+
+
+/*=========================================
+            Map Section
+=========================================*/
+
+.map-section{
+
+    background:rgba(255,255,255,.30);
+
+    backdrop-filter:blur(20px);
+
+    border-radius:22px;
+
+    padding:30px;
+
+    margin-bottom:40px;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.08);
+
+}
+
+.map-section h2{
+
+    margin-bottom:20px;
+
+}
+
+#map{
+
+    width:100%;
+
+    height:500px;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.12);
+
+}
+
+
+
+/*=========================================
+       Prediction History
+=========================================*/
+
+.history{
+
+    background:rgba(255,255,255,.30);
+
+    backdrop-filter:blur(20px);
+
+    border-radius:22px;
+
+    padding:30px;
+
+    margin-bottom:40px;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.08);
+
+}
+
+.history table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    margin-top:20px;
+
+}
+
+.history thead{
+
+    background:#6C63FF;
+
+    color:white;
+
+}
+
+.history th{
+
+    padding:18px;
+
+    font-weight:600;
+
+}
+
+.history td{
+
+    padding:16px;
+
+    text-align:center;
+
+    border-bottom:1px solid #eee;
+
+    color:#444;
+
+}
+
+.history tbody tr{
+
+    transition:.3s;
+
+}
+
+.history tbody tr:hover{
+
+    background:#EEF2FF;
+
+}
+
+
+
+/*=========================================
+         AI Tips Section
+=========================================*/
+
+.tips{
+
+    margin-bottom:40px;
+
+}
+
+.tips-container{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+
+    gap:25px;
+
+}
+
+.tip{
+
+    background:rgba(255,255,255,.30);
+
+    backdrop-filter:blur(20px);
+
+    padding:30px;
+
+    border-radius:22px;
+
+    text-align:center;
+
+    transition:.4s;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.08);
+
+}
+
+.tip:hover{
+
+    transform:translateY(-8px);
+
+    background:#6C63FF;
+
+    color:white;
+
+}
+
+.tip i{
+
+    font-size:45px;
+
+    margin-bottom:18px;
+
+    color:#6C63FF;
+
+    transition:.4s;
+
+}
+
+.tip:hover i{
+
+    color:white;
+
+}
+
+.tip p{
+
+    font-size:16px;
+
+    line-height:1.7;
+
+}
+
+
+
+/*=========================================
+         Live Status Card
+=========================================*/
+
+.live-status{
+
+    margin-bottom:40px;
+
+}
+
+.status-card{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:25px;
+
+    background:linear-gradient(135deg,#6C63FF,#8E7DFF);
+
+    color:white;
+
+    border-radius:22px;
+
+    box-shadow:0 15px 35px rgba(108,99,255,.35);
+
+}
+
+.status-left h3{
+
+    font-size:28px;
+
+    margin-bottom:8px;
+
+}
+
+.status-left p{
+
+    opacity:.9;
+
+}
+
+.status-right{
+
+    font-size:55px;
+
+}
+
+
+
+/*=========================================
+      Floating Action Button
+=========================================*/
+
+.fab{
+
+    position:fixed;
+
+    right:30px;
+
+    bottom:30px;
+
+    width:65px;
+
+    height:65px;
+
+    border-radius:50%;
+
+    background:#6C63FF;
+
+    color:white;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:28px;
+
+    cursor:pointer;
+
+    box-shadow:0 15px 35px rgba(108,99,255,.45);
+
+    transition:.4s;
+
+    z-index:999;
+
+}
+
+.fab:hover{
+
+    transform:scale(1.1) rotate(15deg);
+
+}
+
+
+
+/*=========================================
+      Table Scroll
+=========================================*/
+
+.history{
+
+    overflow-x:auto;
+
+}
+
+
+
+/*=========================================
+       Responsive
+=========================================*/
+
+@media(max-width:992px){
+
+.analytics{
+
+    grid-template-columns:1fr;
+
+}
+
+.chart-box{
+
+    width:100%;
+
+}
+
+#map{
+
+    height:350px;
+
+}
+
+.status-card{
+
+    flex-direction:column;
+
+    gap:20px;
+
+    text-align:center;
+
+}
+
+}
+
+@media(max-width:768px){
+
+.history table{
+
+    font-size:13px;
+
+}
+
+.history th,
+
+.history td{
+
+    padding:10px;
+
+}
+
+.tip{
+
+    padding:20px;
+
+}
+
+#map{
+
+    height:280px;
+
+}
+
+}
+/*=========================================
+            Settings Section
+=========================================*/
+
+.settings{
+
+    background:rgba(255,255,255,.30);
+
+    backdrop-filter:blur(20px);
+
+    border-radius:22px;
+
+    padding:30px;
+
+    margin-bottom:40px;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.08);
+
+}
+
+.setting-box{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:20px;
+
+    margin:15px 0;
+
+    border-radius:15px;
+
+    background:white;
+
+    transition:.3s;
+
+}
+
+.setting-box:hover{
+
+    transform:translateX(8px);
+
+    box-shadow:0 10px 25px rgba(0,0,0,.10);
+
+}
+
+.setting-box label{
+
+    font-size:17px;
+
+    font-weight:500;
+
+    color:#333;
+
+}
+
+.setting-box input[type="checkbox"]{
+
+    width:22px;
+
+    height:22px;
+
+    accent-color:#6C63FF;
+
+    cursor:pointer;
+
+}
+
+
+
+/*=========================================
+             Footer
+=========================================*/
+
+footer{
+
+    margin-top:40px;
+
+    padding:25px;
+
+    border-radius:20px;
+
+    text-align:center;
+
+    background:rgba(255,255,255,.30);
+
+    backdrop-filter:blur(20px);
+
+    color:#555;
+
+    font-weight:500;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.08);
+
+}
+
+
+
+/*=========================================
+          Notification Badge
+=========================================*/
+
+.notification{
+
+    position:relative;
+
+}
+
+.notification::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:12px;
+
+    height:12px;
+
+    border-radius:50%;
+
+    background:red;
+
+    top:10px;
+
+    right:12px;
+
+    animation:pulse 1.5s infinite;
+
+}
+
+@keyframes pulse{
+
+    0%{
+
+        transform:scale(1);
+
+        opacity:1;
+
+    }
+
+    50%{
+
+        transform:scale(1.5);
+
+        opacity:.5;
+
+    }
+
+    100%{
+
+        transform:scale(1);
+
+        opacity:1;
+
+    }
+
+}
+
+
+
+/*=========================================
+          Card Hover Effect
+=========================================*/
+
+.stat-card,
+.chart-box,
+.tip,
+.result-card,
+.prediction-section,
+.settings,
+.history,
+.map-section,
+.meter-card{
+
+    transition:.35s ease;
+
+}
+
+.stat-card:hover,
+.chart-box:hover,
+.tip:hover,
+.result-card:hover,
+.prediction-section:hover,
+.settings:hover,
+.history:hover,
+.map-section:hover,
+.meter-card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 20px 45px rgba(108,99,255,.18);
+
+}
+
+
+
+/*=========================================
+        Gradient Headings
+=========================================*/
+
+h1,
+h2 {
+    background: linear-gradient(90deg, #6C63FF, #00BFFF);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+}
+
+
+/*=========================================
+          Fade Animation
+=========================================*/
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(20px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+.hero,
+.prediction-section,
+.result-card,
+.stats-section,
+.analytics,
+.map-section,
+.history,
+.tips,
+.settings{
+
+    animation:fadeIn .8s ease;
+
+}
+
+
+
+/*=========================================
+          Loading Spinner
+=========================================*/
+
+.loader{
+
+    width:70px;
+
+    height:70px;
+
+    border:8px solid #ddd;
+
+    border-top:8px solid #6C63FF;
+
+    border-radius:50%;
+
+    animation:spin 1s linear infinite;
+
+    margin:auto;
+
+}
+
+@keyframes spin{
+
+    100%{
+
+        transform:rotate(360deg);
+
+    }
+
+}
+
+
+
+/*=========================================
+            Glass Buttons
+=========================================*/
+
+button{
+
+    transition:.3s ease;
+
+}
+
+button:hover{
+
+    filter:brightness(1.08);
+
+}
+
+
+
+/*=========================================
+          Input Hover
+=========================================*/
+
+input:hover,
+select:hover{
+
+    box-shadow:0 10px 25px rgba(108,99,255,.15);
+
+}
+
+
+
+/*=========================================
+        Dark Mode Support
+=========================================*/
+
+.dark-mode{
+
+    background:#0F172A;
+
+    color:#ffffff;
+
+}
+
+.dark-mode .sidebar{
+
+    background:#1E293B;
+
+}
+
+.dark-mode .prediction-section,
+.dark-mode .result-card,
+.dark-mode .chart-box,
+.dark-mode .history,
+.dark-mode .map-section,
+.dark-mode .tips .tip,
+.dark-mode .settings,
+.dark-mode footer,
+.dark-mode .meter-card,
+.dark-mode .stat-card{
+
+    background:#1E293B;
+
+    color:white;
+
+}
+
+.dark-mode input,
+.dark-mode select{
+
+    background:#334155;
+
+    color:white;
+
+}
+
+.dark-mode table{
+
+    color:white;
+
+}
+
+.dark-mode td{
+
+    color:white;
+
+}
+
+.dark-mode .setting-box{
+
+    background:#334155;
+
+}
+
+.dark-mode .progress{
+
+    background:#555;
+
+}
+
+
+
+/*=========================================
+          Responsive
+=========================================*/
+
+@media(max-width:768px){
+
+.setting-box{
+
+    flex-direction:column;
+
+    gap:15px;
+
+    text-align:center;
+
+}
+
+footer{
+
+    font-size:14px;
+
+}
+
+}
+
+@media(max-width:500px){
+
+.main-content{
+
+    padding:15px;
+
+}
+
+.hero-left h2{
+
+    font-size:26px;
+
+}
+
+.hero-left p{
+
+    font-size:15px;
+
+}
+
+.predict-btn{
+
+    font-size:15px;
+
+}
+
+.stat-card h2{
+
+    font-size:26px;
+
+}
+
+.chart-box{
+
+    padding:20px;
+
+}
+
+}
